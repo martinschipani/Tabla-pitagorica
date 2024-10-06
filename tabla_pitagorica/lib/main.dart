@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:tabla_pitagorica/models/pythagorean_table.dart';
+import 'models/pythagorean_table.dart';
+import 'controllers/pythagorean_table_controller.dart';
+import 'views/pythagorean_table_view.dart';
 
 void main() {
-  PythagoreanTable tabla = PythagoreanTable();
-  tabla.printTable(10);
-  //runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Tabla Pitagórica',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: PythagoreanTableScreen(),
+    );
+  }
+}
+
+class PythagoreanTableScreen extends StatelessWidget {
+  final PythagoreanTable model = PythagoreanTable();
+  late final PythagoreanTableController controller;
+
+  PythagoreanTableScreen() {
+    controller = PythagoreanTableController(model);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(),
-    );
+    return PythagoreanTableView(controller: controller, tableSize: 10);
   }
 }
