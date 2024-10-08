@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class PythagoreanTable {
   List<List<dynamic>> generateTable(int size) {
     List<List<dynamic>> table = [];
@@ -22,5 +24,14 @@ class PythagoreanTable {
       String rowString = row.join('\t');
       print(rowString);
     }
+  }
+
+  // Método para generar una operación aleatoria
+  List<int> getRandomOperation(int size) {
+    final random = Random();
+    int row = random.nextInt(size + 1); // Generar un número aleatorio entre 0 y size (inclusive)
+    int col = random.nextInt(size + 1); // Generar un número aleatorio entre 0 y size (inclusive)
+    int result = row * col; // Calcular el resultado de la operación
+    return[row, col, result]; // Devolver la fila, la columna y el resultado
   }
 }

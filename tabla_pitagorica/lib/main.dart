@@ -26,9 +26,7 @@ class PythagoreanTableScreen extends StatelessWidget {
 
   PythagoreanTableScreen() {
     controller = PythagoreanTableController(model);
-  }
-
-  @override
+  }@override
   Widget build(BuildContext context) {
     return PythagoreanTableView(controller: controller, tableSize: 10);
   }
