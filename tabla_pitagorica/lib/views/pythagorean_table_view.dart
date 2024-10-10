@@ -14,10 +14,20 @@ class PythagoreanTableView extends StatefulWidget {
 }
 
 class _PythagoreanTableViewState extends State<PythagoreanTableView> {
+  Set<String> _highlightedCells = {};
+
+  void _handleOperationGenerated(List<int> operation) {
+    setState(() {
+      // Sumamos 1 a la fila y columna porque el resultado está desplazado por los encabezados
+      int multiplicando = operation[0] + 1; // Fila
+      int multiplicador = operation[1] + 1; // Columna
+      _highlightedCells.add('$multiplicando-$multiplicador');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final table = widget.controller.getTable(widget.tableSize);
-
     final operationButtonController = OperationButtonController(widget.tableSize);
 
     return Scaffold(
@@ -28,8 +38,8 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            OperationButtonView(controller: operationButtonController),
-            SizedBox(height: 20),
+            OperationButtonView(controller: operationButtonController, onOperationGenerated: _handleOperationGenerated),
+            SizedBox(height: 20), // Espacio entre la tabla y el botón
             Expanded(
               child: SingleChildScrollView(
                 child: Table(
@@ -38,13 +48,14 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
                   children: [
                     TableRow(
                       children: table[0].map((cell) {
-                        return _buildCell(cell.toString(), true);
+                        return _buildCell(cell.toString(), true, false);
                       }).toList(),
                     ),
                     for (int i = 1; i < table.length; i++)
                       TableRow(
                         children: List.generate(table[i].length, (index) {
-                          return _buildCell(table[i][index].toString(), index == 0);
+                          bool isHighlighted = _highlightedCells.contains('$i-$index');
+                          return _buildCell(table[i][index].toString(), index == 0, isHighlighted);
                         }),
                       ),
                   ],
@@ -57,7 +68,7 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
     );
   }
 
-  Widget _buildCell(String content, bool isBold) {
+  Widget _buildCell(String content, bool isBold, bool isHighlighted) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Center(
@@ -66,6 +77,7 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
           style: TextStyle(
             fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
             fontSize: 11,
+            color: isHighlighted ? Colors.red : Colors.black, // Cambiar color si está resaltado
           ),
           textAlign: TextAlign.center,
         ),
