@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../controllers/pythagorean_table_controller.dart';
+import 'random_operation_button_view.dart';
+import '../controllers/random_operation_button_controller.dart';
 
 class PythagoreanTableView extends StatefulWidget {
   final PythagoreanTableController controller;
@@ -12,12 +14,21 @@ class PythagoreanTableView extends StatefulWidget {
 }
 
 class _PythagoreanTableViewState extends State<PythagoreanTableView> {
-  String _operationText = ''; // Variable para almacenar el texto de la operación
+  Set<String> _highlightedCells = {};
+
+  void _handleOperationGenerated(List<int> operation) {
+    setState(() {
+      // Sumamos 1 a la fila y columna porque el resultado está desplazado por los encabezados
+      int multiplicando = operation[0] + 1; // Fila
+      int multiplicador = operation[1] + 1; // Columna
+      _highlightedCells.add('$multiplicando-$multiplicador');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Obtener la tabla del controlador
     final table = widget.controller.getTable(widget.tableSize);
+    final operationButtonController = OperationButtonController(widget.tableSize);
 
     return Scaffold(
       appBar: AppBar(
@@ -27,42 +38,28 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Botón para generar una operación aleatoria
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  final operation = widget.controller.getRandomOperation(widget.tableSize);
-                  _operationText = '${operation[0]} x ${operation[1]} = ${operation[2]}';
-                });
-              },
-              child: Text('Generar Operación'),
-            ),
-            SizedBox(height: 20), // Espacio entre el botón y el texto
-            // Área de texto para mostrar la operación
-            Text(
-              _operationText,
-              style: TextStyle(fontSize: 18),
-            ),
-            // Tabla pitagórica
-            SingleChildScrollView(
-              child: Table(
-                border: TableBorder.all(), // Bordes de la tabla
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: [
-                  // Fila de encabezado
-                  TableRow(
-                    children: table[0].map((cell) {
-                      return _buildCell(cell.toString(), true);
-                    }).toList(),
-                  ),
-                  // Filas de la tabla
-                  for (int i = 1; i < table.length; i++)
+            OperationButtonView(controller: operationButtonController, onOperationGenerated: _handleOperationGenerated),
+            SizedBox(height: 20), // Espacio entre la tabla y el botón
+            Expanded(
+              child: SingleChildScrollView(
+                child: Table(
+                  border: TableBorder.all(),
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: [
                     TableRow(
-                      children: List.generate(table[i].length, (index) {
-                        return _buildCell(table[i][index].toString(), index == 0);
-                      }),
+                      children: table[0].map((cell) {
+                        return _buildCell(cell.toString(), true, false);
+                      }).toList(),
                     ),
-                ],
+                    for (int i = 1; i < table.length; i++)
+                      TableRow(
+                        children: List.generate(table[i].length, (index) {
+                          bool isHighlighted = _highlightedCells.contains('$i-$index');
+                          return _buildCell(table[i][index].toString(), index == 0, isHighlighted);
+                        }),
+                      ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -71,18 +68,18 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
     );
   }
 
-  // Método auxiliar para construir cada celda
-  Widget _buildCell(String content, bool isBold) {
+  Widget _buildCell(String content, bool isBold, bool isHighlighted) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Center(
         child: Text(
           content,
           style: TextStyle(
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal, // Negrita si es la primera columna
-            fontSize: 11, // Tamaño uniforme de fuente
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            fontSize: 11,
+            color: isHighlighted ? Colors.red : Colors.black, // Cambiar color si está resaltado
           ),
-          textAlign: TextAlign.center, // Centra el texto en la celda
+          textAlign: TextAlign.center,
         ),
       ),
     );
