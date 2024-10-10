@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tabla_pitagorica/views/random_operation_button_view.dart';
 import '../controllers/pythagorean_table_controller.dart';
-import 'random_operation_button_view.dart';
 import '../controllers/random_operation_button_controller.dart';
+
 
 class PythagoreanTableView extends StatefulWidget {
   final PythagoreanTableController controller;
   final int tableSize;
 
-  PythagoreanTableView({required this.controller, required this.tableSize});
+  PythagoreanTableView({Key? key, required this.controller, required this.tableSize}) : super(key: key);
 
   @override
   _PythagoreanTableViewState createState() => _PythagoreanTableViewState();
@@ -69,7 +70,8 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
   }
 
   Widget _buildCell(String content, bool isBold, bool isHighlighted) {
-    return Padding(
+    return Container(
+      color: isHighlighted ? Colors.red : Colors.transparent,
       padding: const EdgeInsets.all(5.0),
       child: Center(
         child: Text(
@@ -77,7 +79,7 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
           style: TextStyle(
             fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
             fontSize: 11,
-            color: isHighlighted ? Colors.red : Colors.black, // Cambiar color si está resaltado
+            color: isHighlighted ? Colors.white : Colors.black,
           ),
           textAlign: TextAlign.center,
         ),
