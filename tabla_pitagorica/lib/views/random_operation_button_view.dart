@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../controllers/operation_button_controller.dart';
+import '../controllers/random_operation_button_controller.dart';
 
 class OperationButtonView extends StatefulWidget {
   final OperationButtonController controller;
@@ -11,7 +11,7 @@ class OperationButtonView extends StatefulWidget {
 }
 
 class _OperationButtonViewState extends State<OperationButtonView> {
-  String _operationText = ''; // Variable para almacenar el texto de la operación
+  String _operationText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class _OperationButtonViewState extends State<OperationButtonView> {
           },
           child: Text('Generar Operación'),
         ),
-        SizedBox(height: 20), // Espacio entre el botón y el texto
+        SizedBox(height: 20),
         Text(
           _operationText,
           style: TextStyle(fontSize: 18),

@@ -19,7 +19,6 @@ class PythagoreanTableController {
     return sb.toString();
   }
 
-  // Método para obtener una operación aleatoria
   List<int> getRandomOperation(int size) {
     return model.getRandomOperation(size);
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../controllers/pythagorean_table_controller.dart';
-import 'operation_button_view.dart'; // Incluir la vista del botón
-import '../controllers/operation_button_controller.dart'; // Incluir el controlador del botón
+import 'random_operation_button_view.dart';
+import '../controllers/random_operation_button_controller.dart';
 
 class PythagoreanTableView extends StatefulWidget {
   final PythagoreanTableController controller;
@@ -16,10 +16,8 @@ class PythagoreanTableView extends StatefulWidget {
 class _PythagoreanTableViewState extends State<PythagoreanTableView> {
   @override
   Widget build(BuildContext context) {
-    // Obtener la tabla del controlador
     final table = widget.controller.getTable(widget.tableSize);
 
-    // Crear un controlador para el botón
     final operationButtonController = OperationButtonController(widget.tableSize);
 
     return Scaffold(
@@ -30,11 +28,8 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Incluir la vista del botón
             OperationButtonView(controller: operationButtonController),
-
-            SizedBox(height: 20), // Espacio entre la tabla y el botón
-            // Tabla pitagórica
+            SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
                 child: Table(
@@ -62,7 +57,6 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
     );
   }
 
-  // Método auxiliar para construir cada celda
   Widget _buildCell(String content, bool isBold) {
     return Padding(
       padding: const EdgeInsets.all(5.0),

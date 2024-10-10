@@ -4,10 +4,12 @@ import 'controllers/pythagorean_table_controller.dart';
 import 'views/pythagorean_table_view.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +26,7 @@ class PythagoreanTableScreen extends StatelessWidget {
   final PythagoreanTable model = PythagoreanTable();
   late final PythagoreanTableController controller;
 
-  PythagoreanTableScreen() {
+  PythagoreanTableScreen({super.key}) {
     controller = PythagoreanTableController(model);
   }
 

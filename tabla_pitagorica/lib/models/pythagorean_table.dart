@@ -16,7 +16,6 @@ class PythagoreanTable {
     return table;
   }
 
-  // METODO PARA DEBUG
   void printTable(int size) {
     List<List<dynamic>> table = generateTable(size);
 
@@ -26,12 +25,11 @@ class PythagoreanTable {
     }
   }
 
-  // Método para generar una operación aleatoria
   List<int> getRandomOperation(int size) {
     final random = Random();
-    int row = random.nextInt(size + 1); // Generar un número aleatorio entre 0 y size (inclusive)
-    int col = random.nextInt(size + 1); // Generar un número aleatorio entre 0 y size (inclusive)
-    int result = row * col; // Calcular el resultado de la operación
-    return[row, col, result]; // Devolver la fila, la columna y el resultado
+    int row = random.nextInt(size + 1);
+    int col = random.nextInt(size + 1);
+    int result = row * col;
+    return [row, col, result];
   }
 }
