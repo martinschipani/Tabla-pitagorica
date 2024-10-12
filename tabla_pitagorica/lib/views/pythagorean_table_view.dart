@@ -3,7 +3,6 @@ import 'package:tabla_pitagorica/views/random_operation_button_view.dart';
 import '../controllers/pythagorean_table_controller.dart';
 import '../controllers/random_operation_button_controller.dart';
 
-
 class PythagoreanTableView extends StatefulWidget {
   final PythagoreanTableController controller;
   final int tableSize;
@@ -49,14 +48,15 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
                   children: [
                     TableRow(
                       children: table[0].map((cell) {
-                        return _buildCell(cell.toString(), true, false);
+                        return _buildCell(cell.toString(), true, false, true); // Primera fila
                       }).toList(),
                     ),
                     for (int i = 1; i < table.length; i++)
                       TableRow(
                         children: List.generate(table[i].length, (index) {
                           bool isHighlighted = _highlightedCells.contains('$i-$index');
-                          return _buildCell(table[i][index].toString(), index == 0, isHighlighted);
+                          bool isHeader = index == 0; // Primera columna
+                          return _buildCell(table[i][index].toString(), isHeader, isHighlighted, i == 0 || index == 0);
                         }),
                       ),
                   ],
@@ -69,9 +69,14 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
     );
   }
 
-  Widget _buildCell(String content, bool isBold, bool isHighlighted) {
+  // Modificar la función _buildCell para incluir la verificación de la primera fila/columna
+  Widget _buildCell(String content, bool isBold, bool isHighlighted, bool isHeader) {
     return Container(
-      color: isHighlighted ? Colors.red : Colors.transparent,
+      color: isHeader
+          ? Colors.grey // Color de la primera fila y columna
+          : isHighlighted
+          ? Colors.red // Color de la celda resaltada
+          : Colors.transparent,
       padding: const EdgeInsets.all(5.0),
       child: Center(
         child: Text(
@@ -79,7 +84,7 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
           style: TextStyle(
             fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
             fontSize: 11,
-            color: isHighlighted ? Colors.white : Colors.black,
+            color: isHighlighted || isHeader ? Colors.white : Colors.black,
           ),
           textAlign: TextAlign.center,
         ),
