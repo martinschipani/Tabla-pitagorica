@@ -1,42 +1,32 @@
 import 'package:flutter/material.dart';
 import '../controllers/random_operation_button_controller.dart';
 
-class OperationButtonView extends StatefulWidget {
+class OperationButtonView extends StatelessWidget {
   final OperationButtonController controller;
-  final Function(List<int>) onOperationGenerated; // Callback para pasar la operación generada a la tabla
+  final Function(List<int>) onOperationGenerated;
 
   OperationButtonView({required this.controller, required this.onOperationGenerated});
-
-  @override
-  _OperationButtonViewState createState() => _OperationButtonViewState();
-}
-
-class _OperationButtonViewState extends State<OperationButtonView> {
-  String _operationText = ''; // Variable para almacenar el texto de la operación
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Botón que genera la operación
         ElevatedButton(
           onPressed: () {
-            setState(() {
-              try {
-                final operation = widget.controller.getRandomOperation();
-                _operationText = '${operation[0]} x ${operation[1]} = ${operation[2]}';
-                widget.onOperationGenerated(operation); // Pasar la operación generada
-              } catch (e) {
-                _operationText = 'No quedan más operaciones.';
-              }
-            });
+            try {
+              // Llama al método correcto para obtener una operación
+              List<int> operation = controller.getRandomOperation();
+              onOperationGenerated(operation);
+            } catch (e) {
+              // Manejo de error si no hay más operaciones disponibles
+              print('Error: $e');
+            }
           },
-          child: Text('Generar Operación'),
+          child: Text('Generar operación'),
         ),
-        SizedBox(height: 20), // Espacio entre el botón y el texto
-        Text(
-          _operationText,
-          style: TextStyle(fontSize: 18),
-        ),
+        // No hay ningún widget para mostrar el resultado debajo
+        // Si anteriormente se mostraba algún texto aquí, ha sido eliminado
       ],
     );
   }

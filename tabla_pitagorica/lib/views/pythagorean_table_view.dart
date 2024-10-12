@@ -15,13 +15,14 @@ class PythagoreanTableView extends StatefulWidget {
 
 class _PythagoreanTableViewState extends State<PythagoreanTableView> {
   Set<String> _highlightedCells = {};
+  String _operationText = ''; // Para mostrar la operación generada arriba de la tabla
 
   void _handleOperationGenerated(List<int> operation) {
     setState(() {
-      // Sumamos 1 a la fila y columna porque el resultado está desplazado por los encabezados
       int multiplicando = operation[0] + 1; // Fila
       int multiplicador = operation[1] + 1; // Columna
       _highlightedCells.add('$multiplicando-$multiplicador');
+      _operationText = '${operation[0]} x ${operation[1]} = ${operation[2]}'; // Actualizar el texto de la operación
     });
   }
 
@@ -32,59 +33,75 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tabla Pitagórica'),
+        title: Text('Tabla pitagórica'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            OperationButtonView(controller: operationButtonController, onOperationGenerated: _handleOperationGenerated),
-            SizedBox(height: 20), // Espacio entre la tabla y el botón
+            // Texto de la operación generada (parte superior)
+            Text(
+              _operationText,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20), // Espacio entre el texto y la tabla
+
+            // Tabla (parte central)
             Expanded(
               child: SingleChildScrollView(
                 child: Table(
                   border: TableBorder.all(),
                   defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: [
+                    // Primera fila
                     TableRow(
                       children: table[0].map((cell) {
-                        return _buildCell(cell.toString(), true, false, true); // Primera fila
+                        return _buildCell(cell.toString(), true, false, isFirstRow: true);
                       }).toList(),
                     ),
+                    // Resto de la tabla
                     for (int i = 1; i < table.length; i++)
                       TableRow(
                         children: List.generate(table[i].length, (index) {
                           bool isHighlighted = _highlightedCells.contains('$i-$index');
-                          bool isHeader = index == 0; // Primera columna
-                          return _buildCell(table[i][index].toString(), isHeader, isHighlighted, i == 0 || index == 0);
+                          bool isFirstColumn = index == 0;
+                          return _buildCell(table[i][index].toString(), isFirstColumn, isHighlighted);
                         }),
                       ),
                   ],
                 ),
               ),
             ),
+
+            SizedBox(height: 20), // Espacio entre la tabla y el botón
+
+            // Botón (parte inferior)
+            OperationButtonView(
+              controller: operationButtonController,
+              onOperationGenerated: _handleOperationGenerated,
+            ),
+            // No hay más widgets debajo del botón
           ],
         ),
       ),
     );
   }
 
-  // Modificar la función _buildCell para incluir la verificación de la primera fila/columna
-  Widget _buildCell(String content, bool isBold, bool isHighlighted, bool isHeader) {
+  Widget _buildCell(String content, bool isBold, bool isHighlighted, {bool isFirstRow = false}) {
     return Container(
-      color: isHeader
-          ? Colors.grey // Color de la primera fila y columna
-          : isHighlighted
-          ? Colors.red // Color de la celda resaltada
+      color: isHighlighted
+          ? Colors.red // Resaltado de la celda seleccionada
+          : (isFirstRow || isBold)
+          ? Colors.blue.shade200 // Color de fondo para la primera fila o columna
           : Colors.transparent,
       padding: const EdgeInsets.all(5.0),
       child: Center(
         child: Text(
           content,
           style: TextStyle(
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            fontWeight: isBold || isFirstRow ? FontWeight.bold : FontWeight.normal,
             fontSize: 11,
-            color: isHighlighted || isHeader ? Colors.white : Colors.black,
+            color: isHighlighted ? Colors.white : Colors.black,
           ),
           textAlign: TextAlign.center,
         ),

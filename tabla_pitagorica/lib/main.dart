@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tabla Pitagórica',
+      debugShowCheckedModeBanner: false,
+      title: 'Tabla pitagórica',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
