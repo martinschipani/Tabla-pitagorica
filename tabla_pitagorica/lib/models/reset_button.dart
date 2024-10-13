@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ResetButtonView extends StatelessWidget {
   final Function onResetConfirmed;
 
-  ResetButtonView({required this.onResetConfirmed});
+  const ResetButtonView({super.key, required this.onResetConfirmed});
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +14,16 @@ class ResetButtonView extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Reiniciar Tabla'),
-              content: Text('¿Estás seguro de que deseas reiniciar la tabla?'),
+              title: const Text('Reiniciar Tabla'),
+              content: const Text('¿Estás seguro de que deseas reiniciar la tabla?'),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('Cancelar'),
+                  child: const Text('Cancelar'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Reiniciar'),
+                  child: const Text('Reiniciar'),
                 ),
               ],
             );
@@ -35,7 +35,7 @@ class ResetButtonView extends StatelessWidget {
           onResetConfirmed();
         }
       },
-      child: Text('Reiniciar Tabla'),
+      child: const Text('Reiniciar Tabla'),
     );
   }
 }

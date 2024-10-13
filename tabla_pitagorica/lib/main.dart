@@ -33,6 +33,19 @@ class PythagoreanTableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PythagoreanTableView(controller: controller, tableSize: 10);
+    return Scaffold(
+      body: PythagoreanTableView(controller: controller, tableSize: 10),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 30, // Ajusta la altura del contenedor
+          alignment: Alignment.center,
+          child: Text(
+            '© 2024 Martin Schipani. Todos los derechos reservados.',
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
   }
 }

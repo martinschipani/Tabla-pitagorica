@@ -5,7 +5,7 @@ class OperationButtonView extends StatelessWidget {
   final OperationButtonController controller;
   final Function(List<int>) onOperationGenerated;
 
-  OperationButtonView({required this.controller, required this.onOperationGenerated});
+  const OperationButtonView({super.key, required this.controller, required this.onOperationGenerated});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,8 @@ class OperationButtonView extends StatelessWidget {
               print('Error: $e');
             }
           },
-          child: Text('Generar operación'),
+          child: const Text('Generar operación'),
         ),
-        // No hay ningún widget para mostrar el resultado debajo
-        // Si anteriormente se mostraba algún texto aquí, ha sido eliminado
       ],
     );
   }

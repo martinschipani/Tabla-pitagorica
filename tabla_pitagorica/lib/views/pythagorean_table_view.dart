@@ -6,14 +6,14 @@ class PythagoreanTableView extends StatefulWidget {
   final PythagoreanTableController controller;
   final int tableSize;
 
-  PythagoreanTableView({Key? key, required this.controller, required this.tableSize}) : super(key: key);
+  const PythagoreanTableView({super.key, required this.controller, required this.tableSize});
 
   @override
   _PythagoreanTableViewState createState() => _PythagoreanTableViewState();
 }
 
 class _PythagoreanTableViewState extends State<PythagoreanTableView> {
-  Set<String> _highlightedCells = {};
+  final Set<String> _highlightedCells = {};
   String _operationText = ''; // Para mostrar la operación generada arriba de la tabla
 
   void _handleOperationGenerated(List<int> operation) {
@@ -39,7 +39,7 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tabla pitagórica'),
+        title: const Text('Tabla pitagórica'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -48,9 +48,9 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
             // Texto de la operación generada (parte superior)
             Text(
               _operationText,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20), // Espacio entre el texto y la tabla
+            const SizedBox(height: 20), // Espacio entre el texto y la tabla
 
             // Tabla (parte central)
             Expanded(
@@ -79,7 +79,7 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
               ),
             ),
 
-            SizedBox(height: 20), // Espacio entre la tabla y el botón
+            const SizedBox(height: 20), // Espacio entre la tabla y el botón
 
             // Botón de generar operación
             ElevatedButton(
@@ -92,10 +92,10 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
                   print('Error: $e');
                 }
               },
-              child: Text('Generar operación'),
+              child: const Text('Generar operación'),
             ),
 
-            SizedBox(height: 20), // Espacio entre el botón de generar y el botón de reinicio
+            const SizedBox(height: 20), // Espacio entre el botón de generar y el botón de reinicio
 
             // Botón de reiniciar tabla
             ResetButtonView(
