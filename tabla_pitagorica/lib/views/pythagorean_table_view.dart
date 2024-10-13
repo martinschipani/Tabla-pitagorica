@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../controllers/pythagorean_table_controller.dart';
+import '../models/reset_button.dart';
 
 class PythagoreanTableView extends StatefulWidget {
   final PythagoreanTableController controller;
@@ -21,6 +22,14 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
       int multiplicador = operation[1] + 1; // Columna
       _highlightedCells.add('$multiplicando-$multiplicador');
       _operationText = '${operation[0]} x ${operation[1]} = ${operation[2]}'; // Actualizar el texto de la operación
+    });
+  }
+
+  void _resetTable() {
+    setState(() {
+      _highlightedCells.clear();
+      _operationText = '';
+      widget.controller.resetOperations(); // Llama al método de reinicio en el controlador
     });
   }
 
@@ -72,7 +81,7 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
 
             SizedBox(height: 20), // Espacio entre la tabla y el botón
 
-            // Botón (parte inferior)
+            // Botón de generar operación
             ElevatedButton(
               onPressed: () {
                 try {
@@ -84,6 +93,13 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
                 }
               },
               child: Text('Generar operación'),
+            ),
+
+            SizedBox(height: 20), // Espacio entre el botón de generar y el botón de reinicio
+
+            // Botón de reiniciar tabla
+            ResetButtonView(
+              onResetConfirmed: _resetTable,
             ),
           ],
         ),
