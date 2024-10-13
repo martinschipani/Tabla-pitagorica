@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tabla_pitagorica/views/random_operation_button_view.dart';
 import '../controllers/pythagorean_table_controller.dart';
-import '../controllers/random_operation_button_controller.dart';
 
 class PythagoreanTableView extends StatefulWidget {
   final PythagoreanTableController controller;
@@ -29,7 +27,6 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
   @override
   Widget build(BuildContext context) {
     final table = widget.controller.getTable(widget.tableSize);
-    final operationButtonController = OperationButtonController(widget.tableSize);
 
     return Scaffold(
       appBar: AppBar(
@@ -76,11 +73,18 @@ class _PythagoreanTableViewState extends State<PythagoreanTableView> {
             SizedBox(height: 20), // Espacio entre la tabla y el botón
 
             // Botón (parte inferior)
-            OperationButtonView(
-              controller: operationButtonController,
-              onOperationGenerated: _handleOperationGenerated,
+            ElevatedButton(
+              onPressed: () {
+                try {
+                  List<int> operation = widget.controller.getRandomOperation();
+                  _handleOperationGenerated(operation);
+                } catch (e) {
+                  // Mostrar un mensaje si ya no hay más operaciones disponibles
+                  print('Error: $e');
+                }
+              },
+              child: Text('Generar operación'),
             ),
-            // No hay más widgets debajo del botón
           ],
         ),
       ),
