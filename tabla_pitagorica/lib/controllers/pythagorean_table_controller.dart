@@ -47,4 +47,9 @@ class PythagoreanTableController {
     _operations.removeAt(index); // Elimina la operación para evitar repetición
     return operation;
   }
+
+  // Reinicia las operaciones
+  void resetOperations() {
+    _generateAllOperations(); // Regenera todas las operaciones
+  }
 }
